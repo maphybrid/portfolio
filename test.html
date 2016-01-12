@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+</head>
+<body>
+    <div id="topBar">
+        <a href ="#" id="load_home"> HOME </a>
+    </div>
+    <div id ="content">        
+    </div>
+    
+    <script>
+    $(document).ready( function() {
+        $("#load_home").on("click", function() {
+            $("#content").load("\main.html");
+        });
+    });
+    </script>
+</body>
+</html>
