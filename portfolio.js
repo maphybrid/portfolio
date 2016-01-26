@@ -14,16 +14,17 @@ var Canvas;
 var img;
 var c;
 
-window.onresize = function () {
+window.onresize = function() {
     history.go(0);
-};
+}
+;
 
-//function preload(){
-//    img = loadImage('http://7-themes.com/data_images/out/53/6952242-ukraine-landscape.jpg');
-//}
+function preload(){
+    img = loadImage('ukraine-landscape.jpg');
+}
 function setup() {
-    //img.loadPixels();
-    //c = img.get(img.width/2, img.height/2);
+    img.loadPixels();
+    c = img.get(img.width/2, img.height/2);
     w = windowWidth;
     h = windowHeight;
     Canvas = createCanvas(w, h);
@@ -31,7 +32,7 @@ function setup() {
     //fullscreen(true);
     
     //Prototyping data object for sub page listings - atangeman20151228
-
+    
     
     var p1 = {
         name: "Recent",
@@ -96,10 +97,10 @@ function setup() {
 }
 
 function draw() {
-    background(111, 152, 150);
+    //background(111, 152, 150);
     textFont("Helvetica");
-  //  background(c);
-  //  image(img, 0, 0, width, height);
+      background(c);
+      image(img, 0, 0, width, height);
     drawGrid();
     fill(83, 76, 100, 100);
     rect(0, 0, w, 30);
@@ -108,18 +109,18 @@ function draw() {
     noStroke();
     textSize(20);
     textAlign(CENTER);
-    text("Andrew G. Tangeman      |      M.S. GIScience      |      Portfolio of Work", width/2, 20);
+    text("Andrew G. Tangeman      |      M.S. GIScience      |      Portfolio of Work", width / 2, 20);
     //		var fs = fullscreen();
     nodeDisplay(pArray);
 }
 
 function mousePressed() {
-
+    
 }
 //-----KEY ACTIONS----!
 
-window.addEventListener("keydown", function (e) {
-  // space and arrow keys
+window.addEventListener("keydown", function(e) {
+    // space and arrow keys
     if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
         e.preventDefault();
     }
@@ -145,6 +146,10 @@ function keyPressed() {
     if (keyCode === DOWN_ARROW && vertSelect < pArray[horzSelect].subPg.subName.length) {
         vertSelect += 1;
     }
+
+    if (keyCode === ENTER) {
+        openDialog();
+    }
 }
 
 function drawGrid() {
@@ -167,7 +172,7 @@ function nodeDisplay(pArray) {
     rectMode(CENTER);
     textSize(70);
     noStroke();
-    for (var i = 0; i < pArray.length; i++) {    
+    for (var i = 0; i < pArray.length; i++) {
         fill(200, 150);
         if (pArray[i].posX === w / 2) {
             stroke(255, 100);
@@ -180,10 +185,10 @@ function nodeDisplay(pArray) {
             textStyle(NORMAL);
             textSize(50);
             fill(255);
-            text(String(selectedCol.name), (width/3), (height/1.48));     
-            if (pArray[i].subPg.subName[vertSelect]){
+            text(String(selectedCol.name), (width / 3), (height / 1.48));
+            if (pArray[i].subPg.subName[vertSelect]) {
                 textSize(25);
-                text(pArray[i].subPg.subName[vertSelect], (width/3), (height/1.35));  
+                text(pArray[i].subPg.subName[vertSelect], (width / 3), (height / 1.35));
             }
         } else {
             stroke(100, 50);
@@ -191,15 +196,29 @@ function nodeDisplay(pArray) {
             ellipse(pArray[i].posX, posY, pArray[i].size, pArray[i].size);
         }
         textStyle(BOLD);
-        fill(255,250);
+        fill(255, 250);
         textSize(25);
         textAlign(CENTER);
         text(pArray[i].alias, pArray[i].posX, (posY) + 8);
         //textSize(20);
-     //   text(pArray[i].name, pArray[i].posX, (posY) + 50);
+        //   text(pArray[i].name, pArray[i].posX, (posY) + 50);
     }
 }
-
+function openDialog() {
+    $('<div/>').dialog({
+        modal: true,
+        open: function() 
+        {
+            if ($(this).is(':empty')) {
+                $(this).load('test2/index.html');
+            }
+        },
+        height: 800,
+        width: 1050,
+        //title: "JQuery Dialog"
+    });
+    $(".ui-dialog-titlebar").hide();
+}
 function subNodeDisplay(pNode) {
     fill(200);
     textAlign(LEFT);
@@ -207,29 +226,29 @@ function subNodeDisplay(pNode) {
     textFont("Courier New");
     textStyle(BOLD);
     textSize(15);
-    stroke(200,200);
+    stroke(200, 200);
     strokeWeight(4);
-    bezier(width/2.25, height/1.95, (width/2.25)-40, (height/1.95), (width/2.25), (height/1.5), (width/2.25)-60, (height/1.5));  
-    bezier((width/2.25)-60, (height/1.5), (width/2.25), (height/1.5),  (width/2.25)-40, (height/1.05), width/2.25, height/1.05);
+    bezier(width / 2.25, height / 1.95, (width / 2.25) - 40, (height / 1.95), (width / 2.25), (height / 1.5), (width / 2.25) - 60, (height / 1.5));
+    bezier((width / 2.25) - 60, (height / 1.5), (width / 2.25), (height / 1.5), (width / 2.25) - 40, (height / 1.05), width / 2.25, height / 1.05);
     //   text(pNode.subPg.subName.length, 50, 50);
     strokeWeight(1);
     for (var subN = 0; subN < pNode.subPg.subName.length; subN++) {
         if (vertSelect === subN) {
-            fill(250, 170);       
+            fill(250, 170);
             ellipse(pNode.posX, (posY + 100) - 60 * (subN - vertSelect), 30, 30);
-            fill(100,75);
+            fill(100, 75);
             stroke(255);
             rectMode(CORNER);
-            rect(pNode.posX-25, (posY + 75), ((String(pNode.subPg.subName[subN]).length)*15)+75, 50);
+            rect(pNode.posX - 25, (posY + 75), ((String(pNode.subPg.subName[subN]).length) * 15) + 75, 50);
             noStroke();
-            fill(255,200);
+            fill(255, 200);
             textSize(20);
-            text(pNode.subPg.subName[subN], pNode.posX + 30, (posY + 105) + 67 * ((subN - vertSelect)));       
+            text(pNode.subPg.subName[subN], pNode.posX + 30, (posY + 105) + 67 * ((subN - vertSelect)));
             textSize(15);
         } else if (subN === vertSelect - 1) {
-            fill(200, 125); 
+            fill(200, 125);
             noStroke();
-            ellipse(pNode.posX, (posY - 30) + 37 * ((subN - vertSelect)), 30+ Math.sin(frameCount / 10), 30+ Math.sin(frameCount / 10));
+            ellipse(pNode.posX, (posY - 30) + 37 * ((subN - vertSelect)), 30 + Math.sin(frameCount / 10), 30 + Math.sin(frameCount / 10));
             text(pNode.subPg.subName[subN], pNode.posX + 30, (posY - 25) + 37 * ((subN - vertSelect)));
             strokeWeight(1);
             stroke(255, 75);
@@ -238,7 +257,7 @@ function subNodeDisplay(pNode) {
         } else if (subN >= vertSelect + 1) {
             fill(200, 130);
             ellipse(pNode.posX, (posY + 100) + 67 * ((subN - vertSelect)), 30, 30);
-            fill(255,150);
+            fill(255, 150);
             text(pNode.subPg.subName[subN], pNode.posX + 30, (posY + 105) + 67 * ((subN - vertSelect)));
         }
         noStroke();

@@ -1,21 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<title>Loading a page dynamically from the server into jQuery UI Dialog</title>
+<link rel="Stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<script type="text/javascript">
+    function openDialog()    {
+        $('<div/>').dialog({
+            modal: true,
+            open: function ()
+            {
+            if ($(this).is(':empty')) {
+                $(this).load('test2/index.html');
+                }
+            },         
+            height: 800,
+            width: 1050,
+            title:"JQuery Dialog"
+        });
+    }
+</script>
 </head>
 <body>
-    <div id="topBar">
-        <a href ="#" id="load_home"> HOME </a>
-    </div>
-    <div id ="content">        
-    </div>
-    
-    <script>
-    $(document).ready( function() {
-        $("#load_home").on("click", function() {
-            $("#content").load("\main.html");
-        });
-    });
-    </script>
+<a href="#" id="dialog" onclick="openDialog()";>open</a>
 </body>
 </html>
